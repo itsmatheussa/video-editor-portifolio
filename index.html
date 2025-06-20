@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matheus Sá - Professional Video Editor</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 4px;
+        }
+
+        /* Color scheme */
+        .hero {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: white;
+        }
+
+        .portfolio-section {
+            background: #0a0a0a;
+            color: white;
+        }
+
+        .services {
+            background: #f8fafc;
+            color: #1a202c;
+        }
+
+        .results {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .skills {
+            background: #1a202c;
+            color: white;
+        }
+
+        .contact {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            color: white;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-10px) rotate(1deg); }
+            66% { transform: translateY(5px) rotate(-1deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes phoneFloat1 {
+            0%, 100% { transform: translateY(0px) rotate(2deg); }
+            50% { transform: translateY(-20px) rotate(-2deg); }
+        }
+
+        @keyframes phoneFloat2 {
+            0%, 100% { transform: translateY(-10px) rotate(-1deg); }
+            50% { transform: translateY(10px) rotate(3deg); }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-pulse-custom { animation: pulse 2s ease-in-out infinite; }
+        .animate-slide-up { animation: slideInUp 0.8s ease-out; }
+        .animate-phone-1 { animation: phoneFloat1 8s ease-in-out infinite; }
+        .animate-phone-2 { animation: phoneFloat2 8s ease-in-out infinite 2s; }
+
+        /* Mobile device styles */
+        .phone-container {
+            position: relative;
+            width: 300px;
+            height: 600px;
+            margin: 0 20px;
+        }
+
+        .phone-frame {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+            border-radius: 35px;
+            padding: 15px;
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.4),
+                inset 0 2px 4px rgba(255,255,255,0.1);
+            position: relative;
+            border: 3px solid #333;
+        }
+
+        .phone-frame::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 4px;
+            background: #666;
+            border-radius: 2px;
+        }
+
+        .phone-frame::after {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            border: 2px solid #666;
+            border-radius: 50%;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            border-radius: 25px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .video-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-embed {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+            background: white;
+        }
+
+        .play-button i {
+            color: #333;
+            font-size: 24px;
+            margin-left: 4px;
+        }
+
+        .video-navigation {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav-button {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+
+        .nav-button i {
+            color: white;
+            font-size: 14px;
+        }
+
+        .video-info {
+            position: absolute;
+            bottom: 20px;
+            left: 15px;
+            right: 60px;
+            z-index: 20;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 10px;
+            color: white;
+        }
+
+        .video-title {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .video-description {
+            font-size: 10px;
+            opacity: 0.8;
+            line-height: 1.3;
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        /* Custom button styles */
+        .cta-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Card styles */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        /* Section spacing */
+        .section-padding {
+            padding: 120px 0;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .phone-container {
+                width: 250px;
+                height: 500px;
+                margin: 0 10px;
+            }
+            
+            .section-padding {
+                padding: 80px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero section-padding">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="animate-slide-up">
+                    <h1 class="text-5xl lg:text-7xl font-black mb-6">
+                        <span class="gradient-text">MATHEUS SÁ</span>
+                    </h1>
+                    <p class="text-xl lg:text-2xl font-light mb-6 text-gray-300">
+                        Professional Video Editor & Content Creator
+                    </p>
+                    <p class="text-lg mb-8 text-gray-400 leading-relaxed max-w-xl">
+                        Transforming brands through cinematic storytelling, viral video content, 
+                        and cutting-edge editing techniques that captivate audiences and drive engagement.
+                    </p>
+                    <a href="#portfolio" class="cta-button">
+                        <i class="fas fa-play"></i>
+                        Watch My Work
+                    </a>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-6 animate-slide-up">
+                    <div class="glass-card p-8 text-center animate-float">
+                        <div class="text-4xl font-black mb-2 gradient-text">100M+</div>
+                        <div class="text-sm text-gray-300">Total Video Views</div>
+                    </div>
+                    <div class="glass-card p-8 text-center animate-float" style="animation-delay: 1s;">
+                        <div class="text-4xl font-black mb-2 gradient-text">15X</div>
+                        <div class="text-sm text-gray-300">Engagement Increase</div>
+                    </div>
+                    <div class="glass-card p-8 text-center animate-float" style="animation-delay: 2s;">
+                        <div class="text-4xl font-black mb-2 gradient-text">9+</div>
+                        <div class="text-sm text-gray-300">Years Experience</div>
+                    </div>
+                    <div class="glass-card p-8 text-center animate-float" style="animation-delay: 3s;">
+                        <div class="text-4xl font-black mb-2 gradient-text">100%</div>
+                        <div class="text-sm text-gray-300">Client Satisfaction</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Portfolio Section -->
+    <section id="portfolio" class="portfolio-section section-padding">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-6xl font-black mb-6">
+                    <span class="gradient-text">My Video Portfolio</span>
+                </h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                    From comedy-driven client projects to high-end cinematic edits for personal branding - 
+                    each video showcases different aspects of my editing expertise and creative vision.
+                </p>
+            </div>
+            
+            <div class="flex justify-center items-center gap-8 flex-wrap">
+                <!-- Phone 1 - Client Comedy Videos -->
+                <div class="phone-container animate-phone-1">
+                    <div class="phone-frame">
+                        <div class="phone-screen">
+                            <div class="video-container" id="video-container-1">
+                                <iframe 
+                                    class="video-embed" 
+                                    id="video-1"
+                                    src="https://www.youtube.com/embed/8Jd-bwOBiXo?enablejsapi=1&controls=0&modestbranding=1&rel=0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    style="display: block;">
+                                </iframe>
+                                <div class="video-overlay" id="overlay-1">
+                                    <div class="play-button" onclick="playVideo(1)">
+                                        <i class="fas fa-play"></i>
+                                    </div>
+                                </div>
+                                <div class="video-navigation">
+                                    <div class="nav-button" onclick="switchVideo(1, 'up')">
+                                        <i class="fas fa-chevron-up"></i>
+                                    </div>
+                                    <div class="nav-button" onclick="switchVideo(1, 'down')">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                </div>
+                                <div class="video-info">
+                                    <div class="video-title" id="title-1">Client Comedy Brand Content</div>
+                                    <div class="video-description" id="desc-1">
+                                        Humorous, engaging content tailored for maximum shareability made for clients brand personality.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phone 2 - Personal High-End Edits -->
+                <div class="phone-container animate-phone-2">
+                    <div class="phone-frame">
+                        <div class="phone-screen">
+                            <div class="video-container" id="video-container-2">
+                                <iframe 
+                                    class="video-embed" 
+                                    id="video-2"
+                                    src="https://www.youtube.com/embed/sUM0eTHUhOU?enablejsapi=1&controls=0&modestbranding=1&rel=0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    style="display: block;">
+                                </iframe>
+                                <div class="video-overlay" id="overlay-2">
+                                    <div class="play-button" onclick="playVideo(2)">
+                                        <i class="fas fa-play"></i>
+                                    </div>
+                                </div>
+                                <div class="video-navigation">
+                                    <div class="nav-button" onclick="switchVideo(2, 'up')">
+                                        <i class="fas fa-chevron-up"></i>
+                                    </div>
+                                    <div class="nav-button" onclick="switchVideo(2, 'down')">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                </div>
+                                <div class="video-info">
+                                    <div class="video-title" id="title-2">High-End Personal Brand</div>
+                                    <div class="video-description" id="desc-2">
+                                        Cinematic editing showcasing advanced techniques, motion graphics and video editing skills.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <p class="text-gray-400 text-lg">
+                    <span class="text-purple-400 font-semibold">Left:</span> Client projects focusing on entertainment and viral potential<br>
+                    <span class="text-purple-400 font-semibold">Right:</span> Personal brand content showcasing advanced editing mastery
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services section-padding">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-6xl font-black mb-6 gradient-text">
+                    Video Editing Services
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Professional video editing solutions that transform raw footage into compelling, 
+                    share-worthy content that drives results and captivates audiences.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                    <div class="text-5xl mb-6">🎬</div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">Short-Form Content</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Instagram Reels, TikToks, and YouTube Shorts optimized for maximum engagement 
+                        with trending effects, transitions, and viral editing techniques.
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                    <div class="text-5xl mb-6">🎥</div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">Long-Form Content</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        YouTube videos, documentaries, and promotional content with cinematic quality, 
+                        professional color grading, and compelling storytelling structure.
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                    <div class="text-5xl mb-6">✨</div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">Motion Graphics</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Custom animations, lower thirds, transitions, and visual effects that add 
+                        professional polish and brand consistency to your content.
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                    <div class="text-5xl mb-6">🎨</div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">Color Grading</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Professional color correction and grading to achieve cinematic looks, 
+                        brand consistency, and visual storytelling that evokes emotion.
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                    <div class="text-5xl mb-6">🎵</div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">Audio Enhancement</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Professional audio mixing, sound design, music synchronization, and 
+                        podcast editing for crystal-clear, broadcast-quality sound.
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                    <div class="text-5xl mb-6">🚀</div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">Viral Optimization</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Platform-specific editing strategies using trending formats, optimal timing, 
+                        and psychological triggers to maximize reach and engagement.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results section-padding">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-6xl font-black mb-6 text-white">
+                    Proven Results
+                </h2>
+                <p class="text-xl text-gray-200 max-w-3xl mx-auto">
+                    Real metrics from video editing projects that transformed brands and 
+                    generated millions of views across platforms.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-card p-8 text-center">
+                    <div class="text-3xl font-light mb-4 text-purple-200">Within 30 Days</div>
+                    <div class="text-5xl font-black mb-4 text-white">5M+ Views</div>
+                    <p class="text-gray-200">
+                        Single video edit generated over 5 million views through strategic 
+                        trending elements and viral editing techniques.
+                    </p>
+                </div>
+                
+                <div class="glass-card p-8 text-center">
+                    <div class="text-3xl font-light mb-4 text-purple-200">Client Portfolio</div>
+                    <div class="text-5xl font-black mb-4 text-white">15X Growth</div>
+                    <p class="text-gray-200">
+                        Average engagement increase across client accounts through 
+                        consistent, high-quality video content strategy.
+                    </p>
+                </div>
+                
+                <div class="glass-card p-8 text-center">
+                    <div class="text-3xl font-light mb-4 text-purple-200">Platform Success</div>
+                    <div class="text-5xl font-black mb-4 text-white">90%+ Retention</div>
+                    <p class="text-gray-200">
+                        Above-average retention rates through compelling storytelling 
+                        and strategic pacing in long-form content.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills section-padding">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-6xl font-black mb-6">
+                    <span class="gradient-text">Technical Expertise</span>
+                </h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                    Mastery of industry-standard tools and cutting-edge techniques that bring 
+                    creative visions to life with professional quality and efficiency.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="glass-card p-8 text-center">
+                    <div class="text-5xl mb-6">🎬</div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Professional Editing</h3>
+                    <ul class="text-gray-300 space-y-2 text-left">
+                        <li>• Adobe Premiere Pro (Expert)</li>
+                        <li>• Final Cut Pro X</li>
+                        <li>• DaVinci Resolve</li>
+                        <li>• Adobe After Effects</li>
+                        <li>• CapCut Pro</li>
+                    </ul>
+                </div>
+                
+                <div class="glass-card p-8 text-center">
+                    <div class="text-5xl mb-6">🎨</div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Motion Graphics</h3>
+                    <ul class="text-gray-300 space-y-2 text-left">
+                        <li>• 2D Animation</li>
+                        <li>• Typography Animation</li>
+                        <li>• Logo Animation</li>
+                        <li>• Custom Transitions</li>
+                        <li>• Visual Effects</li>
+                    </ul>
+                </div>
+                
+                <div class="glass-card p-8 text-center">
+                    <div class="text-5xl mb-6">🎵</div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Audio Production</h3>
+                    <ul class="text-gray-300 space-y-2 text-left">
+                        <li>• Audio Mixing & Mastering</li>
+                        <li>• Sound Design</li>
+                        <li>• Podcast Editing</li>
+                        <li>• Music Synchronization</li>
+                        <li>• Noise Reduction</li>
+                    </ul>
+                </div>
+                
+                <div class="glass-card p-8 text-center">
+                    <div class="text-5xl mb-6">📱</div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Platform Optimization</h3>
+                    <ul class="text-gray-300 space-y-2 text-left">
+                        <li>• Instagram Reels</li>
+                        <li>• TikTok Content</li>
+                        <li>• YouTube Shorts</li>
+                        <li>• LinkedIn Video</li>
+                        <li>• Story Content</li>
+                    </ul>
+                </div>
+                
+                <div class="glass-card p-8 text-center">
+                    <div class="text-5xl mb-6">🎯</div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Content Strategy</h3>
+                    <ul class="text-gray-300 space-y-2 text-left">
+                        <li>• Viral Content Creation</li>
+                        <li>• Trend Analysis</li>
+                        <li>• Brand Storytelling</li>
+                        <li>• Engagement Optimization</li>
+                        <li>• Performance Analytics</li>
+                    </ul>
+                </div>
+                
+                <div class="glass-card p-8 text-center">
+                    <div class="text-5xl mb-6">⚡</div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Fast Turnaround</h3>
+                    <ul class="text-gray-300 space-y-2 text-left">
+                        <li>• 24-48hr Rush Orders</li>
+                        <li>• Efficient Workflows</li>
+                        <li>• Multiple Revisions</li>
+                        <li>• Real-time Updates</li>
+                        <li>• Project Management</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact section-padding">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl lg:text-6xl font-black mb-6 text-white">
+                Ready to Create Viral Content?
+            </h2>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-12">
+                Let's transform your raw footage into scroll-stopping, engagement-driving content 
+                that builds your brand and captivates your audience.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="glass-card p-6">
+                    <div class="text-3xl mb-4">📞</div>
+                    <div class="font-semibold text-white mb-2">Phone</div>
+                    <div class="text-gray-300">+55 (14) 99662-1675</div>
+                </div>
+                
+                <div class="glass-card p-6">
+                    <div class="text-3xl mb-4">📧</div>
+                    <div class="font-semibold text-white mb-2">Email</div>
+                    <div class="text-gray-300">multitask_@outlook.com</div>
+                </div>
+                
+                <div class="glass-card p-6">
+                    <div class="text-3xl mb-4">📍</div>
+                    <div class="font-semibold text-white mb-2">Location</div>
+                    <div class="text-gray-300">São Paulo, Brazil</div>
+                </div>
+                
+                <div class="glass-card p-6">
+                    <div class="text-3xl mb-4">🌍</div>
+                    <div class="font-semibold text-white mb-2">Languages</div>
+                    <div class="text-gray-300">English, Portuguese, Spanish</div>
+                </div>
+            </div>
+            
+            <a href="https://wa.me/5514996621675?text=Hi! I'd like to discuss a video editing project" class="cta-button text-lg">
+                <i class="fab fa-whatsapp"></i>
+                Start Your Project Today
+            </a>
+        </div>
+    </section>
+
+    <script>
+        // Video data for both phones
+        const videoData = {
+            1: [
+                {
+                    src: "https://www.youtube.com/embed/8Jd-bwOBiXo?enablejsapi=1&controls=0&modestbranding=1&rel=0",
+                    title: "Client Comedy Content #1",
+                    description: "Humorous, engaging content tailored for maximum shareability and client brand personality."
+                },
+                {
+                    src: "https://www.youtube.com/embed/oAGIIzr0A3g?enablejsapi=1&controls=0&modestbranding=1&rel=0",
+                    title: "Client Comedy Content #2",
+                    description: "Comedy-driven client project focusing on entertainment value and viral potential."
+                }
+            ],
+            2: [
+                {
+                    src: "https://www.youtube.com/embed/sUM0eTHUhOU?enablejsapi=1&controls=0&modestbranding=1&rel=0",
+                    title: "High-End Personal Brand #1",
+                    description: "Cinematic editing showcasing advanced techniques, motion graphics, and professional storytelling."
+                },
+                {
+                    src: "https://www.youtube.com/embed/I8tJsRSocLs?enablejsapi=1&controls=0&modestbranding=1&rel=0",
+                    title: "High-End Personal Brand #2",
+                    description: "Advanced editing mastery with professional color grading and sophisticated visual effects."
+                }
+            ]
+        };
+
+        let currentVideoIndex = {1: 0, 2: 0};
+
+        function playVideo(phoneNumber) {
+            const overlay = document.getElementById(`overlay-${phoneNumber}`);
+            const iframe = document.getElementById(`video-${phoneNumber}`);
+            
+            overlay.style.display = 'none';
+            
+            // Add autoplay parameter to YouTube videos
+            if (iframe.src.includes('youtube.com')) {
+                if (!iframe.src.includes('autoplay=1')) {
+                    iframe.src = iframe.src.replace('?', '?autoplay=1&');
+                }
+            }
+        }
+
+        function switchVideo(phoneNumber, direction) {
+            const videos = videoData[phoneNumber];
+            const currentIndex = currentVideoIndex[phoneNumber];
+            
+            let newIndex;
+            if (direction === 'up') {
+                newIndex = currentIndex > 0 ? currentIndex - 1 : videos.length - 1;
+            } else {
+                newIndex = currentIndex < videos.length - 1 ? currentIndex + 1 : 0;
+            }
+            
+            currentVideoIndex[phoneNumber] = newIndex;
+            
+            // Update video
+            const iframe = document.getElementById(`video-${phoneNumber}`);
+            const overlay = document.getElementById(`overlay-${phoneNumber}`);
+            const title = document.getElementById(`title-${phoneNumber}`);
+            const description = document.getElementById(`desc-${phoneNumber}`);
+            
+            iframe.src = videos[newIndex].src;
+            title.textContent = videos[newIndex].title;
+            description.textContent = videos[newIndex].description;
+            
+            // Show overlay again
+            overlay.style.display = 'flex';
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-slide-up');
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.glass-card, .phone-container').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Pause videos when clicking overlay
+        document.querySelectorAll('.video-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function() {
+                const phoneNumber = this.id.split('-')[1];
+                playVideo(phoneNumber);
+            });
+        });
+    </script>
+</body>
+</html>
